@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity() {
             vmodel.nextClicked()
         }
 
+        backBtn.setOnClickListener {
+            vmodel.backClicked()
+        }
+
         val numberObserver = Observer<Int> { number ->
             numberTxv.text = number.toString()
             progressBar.progress = number
@@ -39,12 +43,17 @@ class MainActivity : AppCompatActivity() {
             nextBtn.isEnabled = enabled
         }
 
+        val backBtnEnabledObserver = Observer<Boolean>{  enabled ->
+            backBtn.isEnabled = enabled
+        }
+
         val questionObserver = Observer<String>{ question ->
             questionTxv.text = question
         }
 
         vmodel.questionText.observe(this , questionObserver)
         vmodel.nextEnabledLiveData.observe(this , buttonEnabledObserver)
+        vmodel.backEnabledLiveData.observe(this,backBtnEnabledObserver)
         vmodel.questionNumber.observe(this , numberObserver)
 
     }
