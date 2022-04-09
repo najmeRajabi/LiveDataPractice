@@ -1,38 +1,41 @@
 package com.example.livedatapractice
 
+import android.app.Application
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
-class MainViewModel:ViewModel() {
+class MainViewModel(app:Application):AndroidViewModel(app) {
 
     val questionCount = QuestionRepository.questionList.size-1
-
     val questionNumber = MutableLiveData<Int>(0)
-
     val hintText = Transformations.map(questionNumber) {
         if (it < questionCount / 2)
             "faster"
         else
             "you are dying"
-
     }
-
-
     val questionText = MutableLiveData<String>(
         QuestionRepository.questionList[0].question
     )
-    val answerText = MutableLiveData<Int>(
+    private val answerText = MutableLiveData<Int>(
         QuestionRepository.questionList[0].answer
     )
     val answerList = MutableLiveData<ArrayList<Int>>(
         arrayListOf(QuestionRepository.questionList[0].answer,
         fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2])
     )
-
-
+    val score = MutableLiveData<Int>(0)
     var nextEnabledLiveData = MutableLiveData<Boolean>(true)
     var backEnabledLiveData = MutableLiveData<Boolean>(false)
+    var answerEnabledLiveData = MutableLiveData<Boolean>(true)
+
+    init {
+
+    }
 
     fun nextClicked() {
         if (questionNumber.value!! == questionCount-1) {
@@ -47,6 +50,7 @@ class MainViewModel:ViewModel() {
             answerText.value = QuestionRepository.questionList[number].answer
         }
         allAnswers()
+        enableAnswers()
 
     }
     fun backClicked() {
@@ -62,6 +66,7 @@ class MainViewModel:ViewModel() {
             answerText.value = QuestionRepository.questionList[number].answer
         }
         allAnswers()
+        enableAnswers()
     }
     private fun fakeAnswer(): ArrayList<Int> {
         var fakes = arrayListOf<Int>()
@@ -76,11 +81,45 @@ class MainViewModel:ViewModel() {
         return fakes
     }
 
-    fun allAnswers() {
+    private fun allAnswers() {
         var answers = fakeAnswer()
         answerText.value?.let { answers.add(it) }
         answers.shuffle()
         answerList.value = answers
+    }
+
+    fun checkAnswer(answer:Int){
+        if (answer == answerText.value){
+            score.value=score.value?.plus(2)
+
+            Log.d("TAG", "correct "+score.value.toString())
+
+        }
+        else {
+            score.value=score.value?.minus(1)
+            Log.d("TAG", "incorrect "+score.value.toString())
+        }
+        setAnswered()
+        disableAnswers()
+    }
+    private fun disableAnswers(){
+        questionNumber.value?.let {
+            if (QuestionRepository.questionList[it].answered){
+                answerEnabledLiveData.value = false
+            }
+        }
+    }
+    private fun enableAnswers(){
+        questionNumber.value?.let {
+            if (!QuestionRepository.questionList[it].answered){
+                answerEnabledLiveData.value = true
+            }
+        }
+    }
+    fun setAnswered(){
+        questionNumber.value?.let {
+            QuestionRepository.questionList[it].answered = true
+        }
     }
 
 }
