@@ -73,4 +73,14 @@
         app:layout_constraintEnd_toEndOf="@+id/button1"
         app:layout_constraintStart_toStartOf="@+id/button1" />
 
+    <TextView
+        android:id="@+id/txv_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
