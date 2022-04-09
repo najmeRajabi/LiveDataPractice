@@ -63,6 +63,7 @@
         android:layout_marginEnd="10dp"
         android:text="@string/score"
         android:textSize="20sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="@id/txv_score"
         app:layout_constraintStart_toStartOf="@id/txv_score"
         app:layout_constraintTop_toTopOf="@+id/txv_questionNum_show" />
@@ -76,6 +77,7 @@
         app:layout_constraintBottom_toBottomOf="@id/txvNumber"
         android:layout_marginEnd="50dp"
         android:layout_marginTop="22dp"
+        android:textStyle="bold"
         android:text="@string/_0"
         android:textSize="55sp"/>
 
