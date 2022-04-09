@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     fun initViews(){
       var numberTxv = findViewById<TextView>(R.id.tvNumber)
       var questionTxv = findViewById<TextView>(R.id.tvQuestion)
+      var hintTxv = findViewById<TextView>(R.id.txv_hint)
       var nextBtn = findViewById<Button>(R.id.button1)
       var backBtn = findViewById<Button>(R.id.button)
       var progressBar = findViewById<ProgressBar>(R.id.progressBar)
@@ -51,10 +52,15 @@ class MainActivity : AppCompatActivity() {
             questionTxv.text = question
         }
 
+        val hintObserver = Observer<String>{ hint ->
+            hintTxv.text = hint
+        }
+
         vmodel.questionText.observe(this , questionObserver)
         vmodel.nextEnabledLiveData.observe(this , buttonEnabledObserver)
         vmodel.backEnabledLiveData.observe(this,backBtnEnabledObserver)
         vmodel.questionNumber.observe(this , numberObserver)
+        vmodel.hintText.observe(this, hintObserver)
 
     }
 }
