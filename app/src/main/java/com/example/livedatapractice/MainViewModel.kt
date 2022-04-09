@@ -18,6 +18,7 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
         else
             "you are dying"
     }
+
     val questionText = MutableLiveData<String>(
         QuestionRepository.questionList[0].question
     )
@@ -29,6 +30,19 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
         fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2])
     )
     val score = MutableLiveData<Int>(0)
+    val scoreColor = Transformations.map(score){
+        when {
+            it<3 -> {
+                Color.Red
+            }
+            it in 3..6 -> {
+                Color.Yellow
+            }
+            else -> {
+                Color.Green
+            }
+        }
+    }
     var nextEnabledLiveData = MutableLiveData<Boolean>(true)
     var backEnabledLiveData = MutableLiveData<Boolean>(false)
     var answerEnabledLiveData = MutableLiveData<Boolean>(true)
