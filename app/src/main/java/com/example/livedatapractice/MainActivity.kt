@@ -24,6 +24,14 @@ class MainActivity : AppCompatActivity() {
       var nextBtn = findViewById<Button>(R.id.btn_next)
       var backBtn = findViewById<Button>(R.id.btn_back)
       var progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        var answer1Txv = findViewById<TextView>(R.id.txv_answer1)
+        var answer2Txv = findViewById<TextView>(R.id.txv_answer2)
+        var answer3Txv = findViewById<TextView>(R.id.txv_answer3)
+        var answer4Txv = findViewById<TextView>(R.id.txv_answer4)
+
+        var answersTextViews = arrayListOf<TextView>(
+            answer1Txv, answer2Txv, answer3Txv, answer4Txv
+        )
 
         progressBar.max = vmodel.questionCount
 
@@ -56,11 +64,18 @@ class MainActivity : AppCompatActivity() {
             hintTxv.text = hint
         }
 
+        val answerObserver = Observer<ArrayList<Int>> {
+           for (i in 0 until answersTextViews.size) {
+               answersTextViews[i].text = it[i].toString()
+           }
+        }
+
         vmodel.questionText.observe(this , questionObserver)
         vmodel.nextEnabledLiveData.observe(this , buttonEnabledObserver)
         vmodel.backEnabledLiveData.observe(this,backBtnEnabledObserver)
         vmodel.questionNumber.observe(this , numberObserver)
         vmodel.hintText.observe(this, hintObserver)
+        vmodel.answerList.observe(this, answerObserver)
 
     }
 }
