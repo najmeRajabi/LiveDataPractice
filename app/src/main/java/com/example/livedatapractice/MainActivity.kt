@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 
@@ -23,15 +24,17 @@ class MainActivity : AppCompatActivity() {
       var hintTxv = findViewById<TextView>(R.id.txv_hint)
       var nextBtn = findViewById<Button>(R.id.btn_next)
       var backBtn = findViewById<Button>(R.id.btn_back)
-      var progressBar = findViewById<ProgressBar>(R.id.progressBar)
+      val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         var answer1Txv = findViewById<TextView>(R.id.txv_answer1)
         var answer2Txv = findViewById<TextView>(R.id.txv_answer2)
         var answer3Txv = findViewById<TextView>(R.id.txv_answer3)
         var answer4Txv = findViewById<TextView>(R.id.txv_answer4)
+        val scoreTxv = findViewById<TextView>(R.id.txv_score)
 
         var answersTextViews = arrayListOf<TextView>(
             answer1Txv, answer2Txv, answer3Txv, answer4Txv
         )
+        answerClick(answersTextViews)
 
         progressBar.max = vmodel.questionCount
 
@@ -76,6 +79,25 @@ class MainActivity : AppCompatActivity() {
         vmodel.questionNumber.observe(this , numberObserver)
         vmodel.hintText.observe(this, hintObserver)
         vmodel.answerList.observe(this, answerObserver)
+        vmodel.answerEnabledLiveData.observe(this) {
+            for (answer in answersTextViews) {
+                answer.isEnabled = it
+            }
+        }
+        vmodel.score.observe(this){
+            scoreTxv.text = it.toString()
+        }
 
     }
+
+    private fun answerClick(answers: ArrayList<TextView>) {
+        for (i in 0 until answers.size){
+            answers[i].setOnClickListener {
+                vmodel.checkAnswer(answers[i].text.toString().toInt())
+                Toast.makeText(this, "clicked" ,Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
 }
