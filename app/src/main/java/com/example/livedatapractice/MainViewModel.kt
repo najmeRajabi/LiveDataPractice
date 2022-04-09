@@ -25,7 +25,10 @@ class MainViewModel:ViewModel() {
     val answerText = MutableLiveData<Int>(
         QuestionRepository.questionList[0].answer
     )
-    val answerList = MutableLiveData<ArrayList<Int>>()
+    val answerList = MutableLiveData<ArrayList<Int>>(
+        arrayListOf(QuestionRepository.questionList[0].answer,
+        fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2])
+    )
 
 
     var nextEnabledLiveData = MutableLiveData<Boolean>(true)
