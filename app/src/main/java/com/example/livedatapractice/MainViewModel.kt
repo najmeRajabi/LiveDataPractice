@@ -1,6 +1,7 @@
 package com.example.livedatapractice
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 class MainViewModel:ViewModel() {
@@ -8,6 +9,14 @@ class MainViewModel:ViewModel() {
     val questionCount = QuestionRepository.questionList.size-1
 
     val questionNumber = MutableLiveData<Int>(0)
+
+    val hintText = Transformations.map(questionNumber) {
+        if (it < questionCount / 2)
+            "faster"
+        else
+            "allii"
+
+    }
 
 
     val questionText = MutableLiveData<String>(
