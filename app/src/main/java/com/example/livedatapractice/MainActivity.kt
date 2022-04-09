@@ -18,11 +18,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initViews(){
-      var numberTxv = findViewById<TextView>(R.id.tvNumber)
+      var numberTxv = findViewById<TextView>(R.id.txvNumber)
       var questionTxv = findViewById<TextView>(R.id.tvQuestion)
       var hintTxv = findViewById<TextView>(R.id.txv_hint)
-      var nextBtn = findViewById<Button>(R.id.button1)
-      var backBtn = findViewById<Button>(R.id.button)
+      var nextBtn = findViewById<Button>(R.id.btn_next)
+      var backBtn = findViewById<Button>(R.id.btn_back)
       var progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
         progressBar.max = vmodel.questionCount

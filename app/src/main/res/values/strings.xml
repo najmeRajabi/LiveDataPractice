@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LiveDataPractice</string>
+    <string name="back">back</string>
+    <string name="next">Next</string>
+    <string name="question_number">question number</string>
+    <string name="_0">0</string>
+    <string name="score">SCORE</string>
 </resources>
