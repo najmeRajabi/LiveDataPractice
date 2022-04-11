@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val answer4Txv = findViewById<TextView>(R.id.txv_answer4)
         val scoreTxv = findViewById<TextView>(R.id.txv_score)
         val scoreText =findViewById<TextView>(R.id.txv_score_txt)
-        scoreText.setTextColor(ContextCompat.getColor(this,R.color.red))
+        scoreTxv.setTextColor(ContextCompat.getColor(this,R.color.red))
 
         var answersTextViews = arrayListOf<TextView>(
             answer1Txv, answer2Txv, answer3Txv, answer4Txv
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             scoreTxv.text = it.toString()
         }
         vmodel.scoreColor.observe(this){
-            scoreText.setTextColor(ContextCompat.getColor(
+            scoreTxv.setTextColor(ContextCompat.getColor(
                 this,
                 chooseColor(it))
             )
