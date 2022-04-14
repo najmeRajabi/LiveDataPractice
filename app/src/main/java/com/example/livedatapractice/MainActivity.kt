@@ -1,4 +1,4 @@
-package com.example.practice
+package com.example.livedatapractice
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

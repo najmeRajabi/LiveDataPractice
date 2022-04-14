@@ -1,4 +1,4 @@
-package com.example.practice
+package com.example.livedatapractice
 
 import android.content.Context
 import androidx.room.Database

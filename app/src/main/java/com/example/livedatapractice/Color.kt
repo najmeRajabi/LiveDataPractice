@@ -1,4 +1,4 @@
-package com.example.practice
+package com.example.livedatapractice
 
 enum class Color {
     Red ,

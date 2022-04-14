@@ -1,4 +1,4 @@
-package com.example.practice
+package com.example.livedatapractice
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -9,6 +9,9 @@ interface QuestionDao {
     @Query("SELECT * FROM Question")
     fun getAll(): List<Question>
 
+    @Query("SELECT COUNT(number) FROM Question")
+    fun countAll():LiveData<Int>
+
     @Query("SELECT * FROM Question WHERE number=:n")
     fun getQuestionLiveData(n : Int) : LiveData<Question>
 
@@ -17,6 +20,7 @@ interface QuestionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg questions: Question)
+
 
     @Delete
     fun delete(question : Question)
