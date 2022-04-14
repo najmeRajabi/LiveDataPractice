@@ -33,6 +33,8 @@ android {
 
 dependencies {
 
+    apply plugin: 'kotlin-kapt'
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
@@ -52,6 +54,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
 //for using by viewModels()
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
+
+    def room_version = "2.4.2"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

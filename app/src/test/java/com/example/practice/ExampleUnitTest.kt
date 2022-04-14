@@ -1,4 +1,4 @@
-package com.example.livedatapractice
+package com.example.practice
 
 import org.junit.Test
 

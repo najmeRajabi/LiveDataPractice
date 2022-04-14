@@ -1,12 +1,10 @@
-package com.example.livedatapractice
+package com.example.practice
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 
 class MainViewModel(app:Application):AndroidViewModel(app) {
 

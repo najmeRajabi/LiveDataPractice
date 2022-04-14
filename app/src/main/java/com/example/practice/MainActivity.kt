@@ -1,14 +1,10 @@
-package com.example.livedatapractice
+package com.example.practice
 
-import android.annotation.SuppressLint
-import android.graphics.Color.parseColor
-import android.graphics.ColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer

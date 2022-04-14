@@ -1,4 +1,4 @@
-package com.example.livedatapractice
+package com.example.practice
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
