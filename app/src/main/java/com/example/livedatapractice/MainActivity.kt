@@ -50,9 +50,9 @@ class MainActivity : AppCompatActivity() {
         )
         answerClick(answersTextViews)
 
-        vmodel.questionCount?.let {
-            progressBar.max = it
-        }
+//        vmodel.questionCount1.value?.let {
+//            progressBar.max = it
+//        }
 
 
         nextBtn.setOnClickListener {
@@ -115,8 +115,9 @@ class MainActivity : AppCompatActivity() {
                 chooseColor(it))
             )
         }
-        vmodel.questionCount1.observe(this){
+        vmodel.questionCount.observe(this){
             totalQuestion.text = it.toString()
+            progressBar.max = it
         }
 
 

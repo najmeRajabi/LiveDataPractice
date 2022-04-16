@@ -12,11 +12,10 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
     private lateinit var  questionList : List<Question>
     lateinit var question  : LiveData<Question>
 
-    lateinit var questionCount1 : LiveData<Int>
-    val questionCount = QuestionRepository.countAllQuestions()?.value
+    lateinit var questionCount : LiveData<Int>
     val questionNumber = MutableLiveData<Int>(1)
     val hintText = Transformations.map(questionNumber) {
-        questionCount1.value?.let {
+        questionCount.value?.let {
             if (questionNumber.value!! < it.div(2))
                 "faster"
             else
@@ -59,16 +58,19 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
     init {
 
         QuestionRepository.initDB(app.applicationContext)
-        QuestionRepository.insertQuestionRandom()
 
         questionList = QuestionRepository.getQuestions()!!
         question = QuestionRepository.getQuestionLiveData(1)!!
 
-        questionCount1 = QuestionRepository.countAllQuestions()!!
+        questionCount = QuestionRepository.countAllQuestions()!!
+        questionNumber.value?.let{ number ->
+            questionText.value = QuestionRepository.getQuestion(number)?.question
+            answerText.value = QuestionRepository.getQuestion(number)?.answer
+        }
     }
 
     fun nextClicked() {
-        if (questionNumber.value!! == questionCount?.minus(1) ) {
+        if (questionNumber.value!! == questionCount.value?.minus(1) ) {
             questionNumber.value = questionNumber.value?.plus(1)
             nextEnabledLiveData.value = false
         }else{
@@ -155,6 +157,7 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
     }
 
     fun addRandomQuestion(){
+        nextEnabledLiveData.value = true
         QuestionRepository.insertQuestionRandom()
     }
 
