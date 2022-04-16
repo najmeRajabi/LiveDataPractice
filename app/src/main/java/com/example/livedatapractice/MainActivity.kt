@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         val answer3Txv = findViewById<TextView>(R.id.txv_answer3)
         val answer4Txv = findViewById<TextView>(R.id.txv_answer4)
         val scoreTxv = findViewById<TextView>(R.id.txv_score)
-        val scoreText =findViewById<TextView>(R.id.txv_score_txt)
         val totalQuestion = findViewById<TextView>(R.id.count_questions_txv)
         val addQuestionBtn = findViewById<Button>(R.id.addQuestionRandom_btn)
         scoreTxv.setTextColor(ContextCompat.getColor(this,R.color.red))
@@ -50,9 +49,6 @@ class MainActivity : AppCompatActivity() {
         )
         answerClick(answersTextViews)
 
-//        vmodel.questionCount1.value?.let {
-//            progressBar.max = it
-//        }
 
 
         nextBtn.setOnClickListener {

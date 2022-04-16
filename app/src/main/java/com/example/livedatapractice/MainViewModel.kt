@@ -11,7 +11,6 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
 
     private lateinit var  questionList : List<Question>
     lateinit var question  : LiveData<Question>
-
     lateinit var questionCount : LiveData<Int>
     val questionNumber = MutableLiveData<Int>(1)
     val hintText = Transformations.map(questionNumber) {
@@ -21,7 +20,6 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
             else
                 "you are dying"
         }
-
     }
 
     val questionText = MutableLiveData<String>(
@@ -40,10 +38,10 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
     val score = MutableLiveData<Int>(0)
     val scoreColor = Transformations.map(score){
         when {
-            it<3 -> {
+            it< (questionCount.value?.times(2) )?.div(3) ?: 3 -> {
                 Color.Red
             }
-            it in 3..6 -> {
+            it == (questionCount.value?.times(2) )?.div(3)?.rangeTo((questionCount.value?.times(2) )?.div(2/3)!!) ?: 3 -> {
                 Color.Yellow
             }
             else -> {
