@@ -13,6 +13,7 @@ import com.example.livedatapractice.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     val vmodel : MainViewModel by viewModels()
+    var answersTextViews = arrayListOf<TextView>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         val totalQuestion = findViewById<TextView>(R.id.count_questions_txv)
         val addQuestionBtn = findViewById<Button>(R.id.addQuestionRandom_btn)
 
-        val answersTextViews = arrayListOf<TextView>(
+        answersTextViews = arrayListOf<TextView>(
             answer1Txv, answer2Txv, answer3Txv, answer4Txv
         )
         answerClick(answersTextViews)
@@ -119,6 +120,9 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until answers.size){
             answers[i].setOnClickListener {
                 vmodel.checkAnswer(answers[i].text.toString().toInt())
+                for (answer in answersTextViews) {
+                    answer.isEnabled = false
+                }
             }
         }
 
