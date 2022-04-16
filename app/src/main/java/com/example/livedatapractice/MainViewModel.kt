@@ -1,31 +1,42 @@
-package com.example.practice
+package com.example.livedatapractice
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 
 class MainViewModel(app:Application):AndroidViewModel(app) {
 
-    val questionCount = QuestionRepository.questionList.size-1
-    val questionNumber = MutableLiveData<Int>(0)
+    private lateinit var  questionList : List<Question>
+    lateinit var question  : LiveData<Question>
+
+    lateinit var questionCount1 : LiveData<Int>
+    val questionCount = QuestionRepository.countAllQuestions()?.value
+    val questionNumber = MutableLiveData<Int>(1)
     val hintText = Transformations.map(questionNumber) {
-        if (it < questionCount / 2)
-            "faster"
-        else
-            "you are dying"
+        questionCount1.value?.let {
+            if (questionNumber.value!! < it.div(2))
+                "faster"
+            else
+                "you are dying"
+        }
+
     }
 
     val questionText = MutableLiveData<String>(
-        QuestionRepository.questionList[0].question
+        QuestionRepository.getQuestion(1)?.question
     )
     private val answerText = MutableLiveData<Int>(
-        QuestionRepository.questionList[0].answer
+        QuestionRepository.getQuestion(1)?.answer
     )
     val answerList = MutableLiveData<ArrayList<Int>>(
-        arrayListOf(QuestionRepository.questionList[0].answer,
-        fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2])
+        QuestionRepository.getQuestion(1)?.let {
+            arrayListOf(
+                it.answer,
+            fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2])
+        }
     )
     val score = MutableLiveData<Int>(0)
     val scoreColor = Transformations.map(score){
@@ -47,10 +58,17 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
 
     init {
 
+        QuestionRepository.initDB(app.applicationContext)
+        QuestionRepository.insertQuestionRandom()
+
+        questionList = QuestionRepository.getQuestions()!!
+        question = QuestionRepository.getQuestionLiveData(1)!!
+
+        questionCount1 = QuestionRepository.countAllQuestions()!!
     }
 
     fun nextClicked() {
-        if (questionNumber.value!! == questionCount-1) {
+        if (questionNumber.value!! == questionCount?.minus(1) ) {
             questionNumber.value = questionNumber.value?.plus(1)
             nextEnabledLiveData.value = false
         }else{
@@ -58,8 +76,8 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
             questionNumber.value = questionNumber.value?.plus(1)
         }
         questionNumber.value?.let{ number ->
-            questionText.value = QuestionRepository.questionList[number].question
-            answerText.value = QuestionRepository.questionList[number].answer
+            questionText.value = QuestionRepository.getQuestion(number)?.question
+            answerText.value = QuestionRepository.getQuestion(number)?.answer
         }
         allAnswers()
         enableAnswers()
@@ -74,21 +92,23 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
             questionNumber.value = questionNumber.value?.minus(1)
         }
         questionNumber.value?.let{ number ->
-            questionText.value = QuestionRepository.questionList[number].question
-            answerText.value = QuestionRepository.questionList[number].answer
+            questionText.value = QuestionRepository.getQuestion(number)?.question
+            answerText.value = QuestionRepository.getQuestion(number)?.answer
         }
         allAnswers()
         enableAnswers()
     }
     private fun fakeAnswer(): ArrayList<Int> {
         var fakes = arrayListOf<Int>()
-        var fake =QuestionRepository.questionList[questionNumber.value!!].answer
+        var fake = questionNumber.value?.let { QuestionRepository.getQuestion(it)?.answer }
         for (i in 0..2) {
-            while (fake == QuestionRepository.questionList[questionNumber.value!!].answer
+            while (fake == questionNumber.value?.let { QuestionRepository.getQuestion(it)?.answer }
                 || fakes.contains(fake)) {
                 fake = ((0..180).random())
             }
-            fakes.add(fake)
+            if (fake != null) {
+                fakes.add(fake)
+            }
         }
         return fakes
     }
@@ -116,22 +136,26 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
     }
     private fun disableAnswers(){
         questionNumber.value?.let {
-            if (QuestionRepository.questionList[it].answered){
+            if (QuestionRepository.getQuestion(it)?.answered == true){
                 answerEnabledLiveData.value = false
             }
         }
     }
     private fun enableAnswers(){
         questionNumber.value?.let {
-            if (!QuestionRepository.questionList[it].answered){
+            if (QuestionRepository.getQuestion(it)?.answered != null){
                 answerEnabledLiveData.value = true
             }
         }
     }
     fun setAnswered(){
         questionNumber.value?.let {
-            QuestionRepository.questionList[it].answered = true
+            QuestionRepository.getQuestion(it)?.answered = true
         }
+    }
+
+    fun addRandomQuestion(){
+        QuestionRepository.insertQuestionRandom()
     }
 
 }
