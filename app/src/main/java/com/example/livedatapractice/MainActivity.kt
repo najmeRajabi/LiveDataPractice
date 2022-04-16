@@ -7,13 +7,21 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.example.livedatapractice.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     val vmodel : MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
+
+        val binding : ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        binding.lifecycleOwner = this
+        binding.hint = vmodel.hintText.value.toString()
 
         initViews()
     }
@@ -33,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         val answer4Txv = findViewById<TextView>(R.id.txv_answer4)
         val scoreTxv = findViewById<TextView>(R.id.txv_score)
         val scoreText =findViewById<TextView>(R.id.txv_score_txt)
+        val totalQuestion = findViewById<TextView>(R.id.count_questions_txv)
+        val addQuestionBtn = findViewById<Button>(R.id.addQuestionRandom_btn)
         scoreTxv.setTextColor(ContextCompat.getColor(this,R.color.red))
 
         var answersTextViews = arrayListOf<TextView>(
@@ -40,7 +50,10 @@ class MainActivity : AppCompatActivity() {
         )
         answerClick(answersTextViews)
 
-        progressBar.max = vmodel.questionCount
+        vmodel.questionCount?.let {
+            progressBar.max = it
+        }
+
 
         nextBtn.setOnClickListener {
             vmodel.nextClicked()
@@ -48,6 +61,10 @@ class MainActivity : AppCompatActivity() {
 
         backBtn.setOnClickListener {
             vmodel.backClicked()
+        }
+
+        addQuestionBtn.setOnClickListener {
+            vmodel.addRandomQuestion()
         }
 
         val numberObserver = Observer<Int> { number ->
@@ -73,7 +90,8 @@ class MainActivity : AppCompatActivity() {
 
         val answerObserver = Observer<ArrayList<Int>> {
            for (i in 0 until answersTextViews.size) {
-               answersTextViews[i].text = it[i].toString()
+               //todo null error
+//               answersTextViews[i].text = it[i].toString()
            }
         }
 
@@ -97,6 +115,11 @@ class MainActivity : AppCompatActivity() {
                 chooseColor(it))
             )
         }
+        vmodel.questionCount1.observe(this){
+            totalQuestion.text = it.toString()
+        }
+
+
 
     }
 
