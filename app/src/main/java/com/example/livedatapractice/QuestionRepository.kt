@@ -43,6 +43,10 @@ object QuestionRepository {
         questionDao?.insertAll(newRandomQuestion())
     }
 
+    fun insertQuestion(question: Question){
+        questionDao?.insertAll(question)
+    }
+
     fun countAllQuestions(): LiveData<Int>? {
         return questionDao?.countAll()
     }
