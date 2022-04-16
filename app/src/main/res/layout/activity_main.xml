@@ -7,6 +7,9 @@
         <variable
             name="hint"
             type="String" />
+        <variable
+            name="viewModel"
+            type="com.example.livedatapractice.MainViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -32,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="@{hint}"
+        android:text="@{viewModel.hintText}"
         app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="@+id/progressBar"
         app:layout_constraintStart_toStartOf="@+id/progressBar" />

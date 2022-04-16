@@ -15,13 +15,13 @@ class MainActivity : AppCompatActivity() {
     val vmodel : MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
 
         val binding : ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.lifecycleOwner = this
-        binding.hint = vmodel.hintText.value.toString()
+
+        binding.viewModel = vmodel
 
         initViews()
     }
@@ -80,9 +80,7 @@ class MainActivity : AppCompatActivity() {
             questionTxv.text = question
         }
 
-        val hintObserver = Observer<String>{ hint ->
-            hintTxv.text = hint
-        }
+
 
         val answerObserver = Observer<ArrayList<Int>> {
            for (i in 0 until answersTextViews.size) {
@@ -95,7 +93,6 @@ class MainActivity : AppCompatActivity() {
         vmodel.nextEnabledLiveData.observe(this , buttonEnabledObserver)
         vmodel.backEnabledLiveData.observe(this,backBtnEnabledObserver)
         vmodel.questionNumber.observe(this , numberObserver)
-        vmodel.hintText.observe(this, hintObserver)
         vmodel.answerList.observe(this, answerObserver)
         vmodel.answerEnabledLiveData.observe(this) {
             for (answer in answersTextViews) {

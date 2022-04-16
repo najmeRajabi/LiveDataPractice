@@ -30,13 +30,6 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
     )
     lateinit var answerList : MutableLiveData<ArrayList<Int>>
 
-//    var answerList = MutableLiveData<ArrayList<Int>>(
-//        QuestionRepository.getQuestion(1)?.let {
-//            arrayListOf(
-//                it.answer,
-//            fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2])
-//        }
-//    )
     val score = MutableLiveData<Int>(0)
     val scoreColor = Transformations.map(score){
         when {
