@@ -31,10 +31,8 @@ class MainActivity : AppCompatActivity() {
     fun initViews(){
       val numberTxv = findViewById<TextView>(R.id.txvNumber)
       val questionTxv = findViewById<TextView>(R.id.tvQuestion)
-      val hintTxv = findViewById<TextView>(R.id.txv_hint)
       val nextBtn = findViewById<Button>(R.id.btn_next)
       val backBtn = findViewById<Button>(R.id.btn_back)
-      val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val answer1Txv = findViewById<TextView>(R.id.txv_answer1)
         val answer2Txv = findViewById<TextView>(R.id.txv_answer2)
         val answer3Txv = findViewById<TextView>(R.id.txv_answer3)
@@ -65,7 +63,6 @@ class MainActivity : AppCompatActivity() {
 
         val numberObserver = Observer<Int> { number ->
             numberTxv.text = number.toString()
-            progressBar.progress = number
         }
 
         val buttonEnabledObserver = Observer<Boolean>{  enabled ->
@@ -110,7 +107,6 @@ class MainActivity : AppCompatActivity() {
         }
         vmodel.questionCount.observe(this){
             totalQuestion.text = it.toString()
-            progressBar.max = it
         }
 
 
