@@ -29,10 +29,9 @@ class MainActivity : AppCompatActivity() {
 
 
     fun initViews(){
-      val numberTxv = findViewById<TextView>(R.id.txvNumber)
-      val questionTxv = findViewById<TextView>(R.id.tvQuestion)
-      val nextBtn = findViewById<Button>(R.id.btn_next)
-      val backBtn = findViewById<Button>(R.id.btn_back)
+        val numberTxv = findViewById<TextView>(R.id.txvNumber)
+        val nextBtn = findViewById<Button>(R.id.btn_next)
+        val backBtn = findViewById<Button>(R.id.btn_back)
         val answer1Txv = findViewById<TextView>(R.id.txv_answer1)
         val answer2Txv = findViewById<TextView>(R.id.txv_answer2)
         val answer3Txv = findViewById<TextView>(R.id.txv_answer3)
@@ -40,9 +39,8 @@ class MainActivity : AppCompatActivity() {
         val scoreTxv = findViewById<TextView>(R.id.txv_score)
         val totalQuestion = findViewById<TextView>(R.id.count_questions_txv)
         val addQuestionBtn = findViewById<Button>(R.id.addQuestionRandom_btn)
-        scoreTxv.setTextColor(ContextCompat.getColor(this,R.color.red))
 
-        var answersTextViews = arrayListOf<TextView>(
+        val answersTextViews = arrayListOf<TextView>(
             answer1Txv, answer2Txv, answer3Txv, answer4Txv
         )
         answerClick(answersTextViews)
@@ -73,20 +71,14 @@ class MainActivity : AppCompatActivity() {
             backBtn.isEnabled = enabled
         }
 
-        val questionObserver = Observer<String>{ question ->
-            questionTxv.text = question
-        }
-
 
 
         val answerObserver = Observer<ArrayList<Int>> {
            for (i in 0 until answersTextViews.size) {
-               //todo null error
                answersTextViews[i].text = it[i].toString()
            }
         }
 
-        vmodel.questionText.observe(this , questionObserver)
         vmodel.nextEnabledLiveData.observe(this , buttonEnabledObserver)
         vmodel.backEnabledLiveData.observe(this,backBtnEnabledObserver)
         vmodel.questionNumber.observe(this , numberObserver)
