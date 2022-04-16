@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         val answerObserver = Observer<ArrayList<Int>> {
            for (i in 0 until answersTextViews.size) {
                //todo null error
-//               answersTextViews[i].text = it[i].toString()
+               answersTextViews[i].text = it[i].toString()
            }
         }
 

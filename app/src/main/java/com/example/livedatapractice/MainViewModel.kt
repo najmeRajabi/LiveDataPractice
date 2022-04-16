@@ -28,24 +28,26 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
     private val answerText = MutableLiveData<Int>(
         QuestionRepository.getQuestion(1)?.answer
     )
-    val answerList = MutableLiveData<ArrayList<Int>>(
-        QuestionRepository.getQuestion(1)?.let {
-            arrayListOf(
-                it.answer,
-            fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2])
-        }
-    )
+    lateinit var answerList : MutableLiveData<ArrayList<Int>>
+
+//    var answerList = MutableLiveData<ArrayList<Int>>(
+//        QuestionRepository.getQuestion(1)?.let {
+//            arrayListOf(
+//                it.answer,
+//            fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2])
+//        }
+//    )
     val score = MutableLiveData<Int>(0)
     val scoreColor = Transformations.map(score){
         when {
             it< (questionCount.value?.times(2) )?.div(3) ?: 3 -> {
                 Color.Red
             }
-            it == (questionCount.value?.times(2) )?.div(3)?.rangeTo((questionCount.value?.times(2) )?.div(2/3)!!) ?: 3 -> {
-                Color.Yellow
+            it > (questionCount.value?.times(4) )?.div(3)!! -> {
+                Color.Green
             }
             else -> {
-                Color.Green
+                Color.Yellow
             }
         }
     }
@@ -65,6 +67,11 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
             questionText.value = QuestionRepository.getQuestion(number)?.question
             answerText.value = QuestionRepository.getQuestion(number)?.answer
         }
+
+        answerList = MutableLiveData<ArrayList<Int>>(
+
+                arrayListOf(answerText.value!!,
+                    fakeAnswer()[0],fakeAnswer()[1],fakeAnswer()[2]))
     }
 
     fun nextClicked() {
@@ -136,21 +143,23 @@ class MainViewModel(app:Application):AndroidViewModel(app) {
     }
     private fun disableAnswers(){
         questionNumber.value?.let {
-            if (QuestionRepository.getQuestion(it)?.answered == true){
+            if (question.value?.answered == true){
                 answerEnabledLiveData.value = false
             }
         }
     }
     private fun enableAnswers(){
         questionNumber.value?.let {
-            if (QuestionRepository.getQuestion(it)?.answered != null){
+            if (QuestionRepository.getQuestion(it)?.answered == false){
                 answerEnabledLiveData.value = true
             }
         }
     }
     fun setAnswered(){
         questionNumber.value?.let {
-            QuestionRepository.getQuestion(it)?.answered = true
+//            QuestionRepository.getQuestion(it)?.answered = true
+            question.value?.answered  = true
+            question.value?.let { it1 -> QuestionRepository.insertQuestion(it1) }
         }
     }
 
